@@ -47,3 +47,6 @@ class Data:
             return self.features
         else:
             return pd.concat([self._features, self._features], axis=1)
+
+    def remove_columns(self, removing_features: list):
+        return self._features[removing_features]
