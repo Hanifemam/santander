@@ -50,3 +50,8 @@ class Data:
 
     def remove_columns(self, removing_features: list):
         return self._features[removing_features]
+
+    def get_positive_negative_classes(self):
+        df_positive = self._features[self._target == 1]
+        df_negative = self._features[self._target == 0]
+        return df_positive, df_negative
