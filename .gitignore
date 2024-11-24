@@ -178,5 +178,5 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 **/data/
-/Users/hanifemamgholizadeh/Desktop/Projects/Kaggle/Santander/data
+data
 .DS_Store
