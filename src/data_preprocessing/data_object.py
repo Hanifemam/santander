@@ -3,12 +3,14 @@ import pandas as pd
 
 class Data:
 
+    dir_ = "data/"
+
     def __init__(
-        self, df: pd.DataFrame = None, name="name.csv", target_column: str = None
+        self, df: pd.DataFrame = None, name="train.csv", target_column: str = None
     ):
+        self.file_name = name
         if df is None:
-            dir_ = "data/" + name
-            self._df = self.load_data(dir_)
+            self._df = self.load_data(Data.dir_ + name)
         else:
             self._df = df
 
@@ -32,3 +34,16 @@ class Data:
             return pd.read_csv(dir)
         else:
             return pd.read_pickle(dir)
+
+    def save_data(self, name="temp_data.csv"):
+        df = self.concat_data_frames()
+        if name.endswith("csv"):
+            df.to_csv(Data.dir_ + name)
+        else:
+            df.to_pickle(Data.dir_ + name)
+
+    def concat_data_frames(self):
+        if self._target is None:
+            return self.features
+        else:
+            return pd.concat([self._features, self._features], axis=1)
