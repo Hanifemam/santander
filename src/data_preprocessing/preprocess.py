@@ -7,9 +7,11 @@ from data_object import Data
 class Preproccesor:
 
     def __init__(self):
-        self.data = Data()
-        self._target = data.target
-        self._features = data.features
+        self.data_train = Data()
+        self.data_test = Data(name="test.csv")
+        self._target = self.data_train.target
+        self._features_train = self.data_train.features
+        self._features_test = self.data_test.features
 
     def remove_zero_variance_columns(self):
         selected_col = []
@@ -17,10 +19,10 @@ class Preproccesor:
             col = self._features[col_name]
             self.add_non_zero_variance_col(selected_col, col)
 
-        self.data.remove_columns(selected_col)
+        self.data_train.remove_columns(selected_col)
+        self.data_test.remove_columns(selected_col)
 
     def add_non_zero_variance_col(self, selected_col: list, col: pd.Series):
-
         if col.var() != 0:
             return selected_col.append(col)
         else:
