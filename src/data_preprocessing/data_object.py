@@ -6,7 +6,11 @@ class Data:
     dir_ = "data/"
 
     def __init__(
-        self, df: pd.DataFrame = None, name="train.csv", target_column: str = None
+        self,
+        df: pd.DataFrame = None,
+        name="train.csv",
+        target_column: str = None,
+        id_columns: list[str] = ["ID"],
     ):
         self.file_name = name
         if df is None:
@@ -20,6 +24,30 @@ class Data:
         else:
             self._target = self._df[target_column]
             self._features = self._df.drop(target_column, axis=1)
+
+        for id in id_columns:
+            if id in self.features.columns:
+                self._features = self._features.drop(id, axis=1)
+
+        data_type_list = self.get_data_type()
+        self._numerical_columns = data_type_list["numbererical"]
+        self._categorical_columns = data_type_list["categorical"]
+        self._boolean_columns = data_type_list["boolean"]
+
+    def __len__(self):
+        return len(self._features.columns)
+
+    @property
+    def numerical_columns(self):
+        return self._numerical_columns
+
+    @property
+    def categorical_columns(self):
+        return self._categorical_columns
+
+    @property
+    def boolean_columns(self):
+        return self._boolean_columns
 
     @property
     def features(self):
@@ -49,9 +77,21 @@ class Data:
             return pd.concat([self._features, self._features], axis=1)
 
     def remove_columns(self, removing_features: list):
-        return self._features[removing_features]
+        self._features = self._features.drop(removing_features, axis=1)
+        return self._features
 
     def get_positive_negative_classes(self):
         df_positive = self._features[self._target == 1]
         df_negative = self._features[self._target == 0]
         return df_positive, df_negative
+
+    def get_data_type(self):
+        return {
+            "numbererical": self._features.select_dtypes(
+                include=["number"]
+            ).columns.tolist(),
+            "categorical": self._features.select_dtypes(
+                include=["object"]
+            ).columns.tolist(),
+            "boolean": self._features.select_dtypes(include=["bool"]).columns.tolist(),
+        }
