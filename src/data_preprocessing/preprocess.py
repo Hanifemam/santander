@@ -63,7 +63,7 @@ class Preproccesor:
         )
         for column in columns_to_keep:
             if self._features_train[column].isnull().any():
-                median_value = self._features_train[column].median()
+                median_value = "New category"
                 nan_indices = self._features_train[
                     self._features_train[column].isna()
                 ].index.tolist()
