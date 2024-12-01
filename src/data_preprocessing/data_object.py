@@ -2,7 +2,7 @@ import pandas as pd
 
 
 class Data:
-
+    # TODO set an attribute setter function
     dir_ = "data/"
 
     def __init__(
@@ -95,3 +95,8 @@ class Data:
             ).columns.tolist(),
             "boolean": self._features.select_dtypes(include=["bool"]).columns.tolist(),
         }
+
+    def set_new_values(self, feature, index_list, new_value):
+        self._features.loc[index_list, feature] = new_value
+
+    # TODO change features to df_features
