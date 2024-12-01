@@ -5,6 +5,7 @@ from data_object import Data
 
 
 class Preproccesor:
+    # TODO: Change the Preproccesor class to a modul and separate variance based feature removing and nan value handling
 
     def __init__(self):
         self.data_train = Data(target_column="TARGET")
@@ -47,10 +48,28 @@ class Preproccesor:
                     )
         return class_based_zero_variance
 
-    def handel_nan_with_median(self, nan_threshold=0.5):
+    def handel_nan_with(self, nan_threshold=0.5):
         # TODO add other imputing methods instead of median
         numeric_columns = self.data_train.numerical_columns
+        self.handle_numerical_nan(numeric_columns, nan_threshold)
 
+        cat_bool_columns = self.data_train.boolean_columns
+        cat_bool_columns.extend(self.data_train.categorical_columns)
+        self.handle_bool_categorical_nan(cat_bool_columns, nan_threshold)
+
+    def handle_bool_categorical_nan(self, numeric_columns, nan_threshold):
+        columns_to_keep, _ = self.remove_high_nan_features(
+            numeric_columns, nan_threshold
+        )
+        for column in columns_to_keep:
+            if self._features_train[column].isnull().any():
+                median_value = self._features_train[column].median()
+                nan_indices = self._features_train[
+                    self._features_train[column].isna()
+                ].index.tolist()
+                self.data_test.set_new_values(column, nan_indices, median_value)
+
+    def handle_numerical_nan(self, numeric_columns, nan_threshold):
         columns_to_keep, _ = self.remove_high_nan_features(
             numeric_columns, nan_threshold
         )
