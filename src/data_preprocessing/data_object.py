@@ -106,4 +106,9 @@ class Data:
     def set_new_values(self, feature, index_list, new_value):
         self._features.loc[index_list, feature] = new_value
 
+    def transform_data(self, fotted_tansformer):
+        self._features[self._numerical_columns] = fotted_tansformer.fit_transform(
+            self._features[self._numerical_columns]
+        )
+
     # TODO change features to df_features

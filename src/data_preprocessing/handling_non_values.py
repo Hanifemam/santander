@@ -5,8 +5,8 @@ from data_object import Data
 
 def handle_nan(data_train: Data, data_test: Data, nan_threshold=0.5):
     removed_column_info = remove_high_nan_features(data_train, data_test, nan_threshold)
-    handle_numerical_nan(data_train, data_test, nan_threshold)
-    handle_categorical_nan(data_train, data_test, nan_threshold)
+    handle_numerical_nan(data_train, data_test)
+    handle_categorical_nan(data_train, data_test)
     return removed_column_info
 
 
@@ -39,11 +39,11 @@ def remove_high_nan_features(data_train: Data, data_test: Data, nan_threshold):
     columns_name = data_train.features.columns
     nan_proportions = data_train.features[columns_name].isna().mean()
 
-    removed_columns_info = removed_columns_info(
-        data_train, data_test, nan_proportions, nan_threshold, columns_name
+    removed_columns_info_retured = removed_columns_info(
+        data_train, data_test, nan_proportions, nan_threshold
     )
 
-    return removed_columns_info
+    return removed_columns_info_retured
 
 
 def removed_columns_info(
