@@ -55,6 +55,7 @@ def remove_high_nan_features(
         columns_to_remove = []
         columns_to_keep = columns_name
     data_train.remove_columns(columns_to_remove)
+    data_test.remove_columns(columns_to_remove)
     removed_columns_info = pd.DataFrame(
         {
             "column": columns_to_remove,
