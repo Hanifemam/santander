@@ -11,3 +11,6 @@ def preprocess():
     data_test = Data(name="test.csv")
     handle_no_variance(data_train, data_test)
     handle_nan(data_train, data_test)
+
+
+preprocess()

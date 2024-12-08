@@ -29,10 +29,11 @@ class Data:
             if id in self.features.columns:
                 self._features = self._features.drop(id, axis=1)
 
-        data_type_list = self.get_data_type()
-        self._numerical_columns = data_type_list["numbererical"]
-        self._categorical_columns = data_type_list["categorical"]
-        self._boolean_columns = data_type_list["boolean"]
+        self._numerical_columns = None
+        self._categorical_columns = None
+        self._boolean_columns = None
+
+        self.set_data_type(self.get_data_type())
 
     def __len__(self):
         return len(self._features.columns)
@@ -78,6 +79,7 @@ class Data:
 
     def remove_columns(self, removing_features: list):
         self._features = self._features.drop(removing_features, axis=1)
+        self.set_data_type(self.get_data_type())
         return self._features
 
     def get_positive_negative_classes(self):
@@ -95,6 +97,11 @@ class Data:
             ).columns.tolist(),
             "boolean": self._features.select_dtypes(include=["bool"]).columns.tolist(),
         }
+
+    def set_data_type(self, data_type_list):
+        self._numerical_columns = data_type_list["numbererical"]
+        self._categorical_columns = data_type_list["categorical"]
+        self._boolean_columns = data_type_list["boolean"]
 
     def set_new_values(self, feature, index_list, new_value):
         self._features.loc[index_list, feature] = new_value
