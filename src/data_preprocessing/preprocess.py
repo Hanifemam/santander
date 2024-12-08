@@ -10,11 +10,9 @@ from data_transforming import data_transform
 def preprocess():
     data_train = Data(target_column="TARGET")
     data_test = Data(name="test.csv")
-    print(data_train.features)
     handle_no_variance(data_train, data_test)
     handle_nan(data_train, data_test)
     data_transform(data_train, data_test)
-    print(data_train.features)
 
 
 preprocess()
