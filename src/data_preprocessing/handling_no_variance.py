@@ -3,7 +3,7 @@ import pandas as pd
 from data_object import Data
 
 
-def handling_no_variance(data_train: Data, data_test: Data):
+def handle_no_variance(data_train: Data, data_test: Data):
     remove_zero_variance_columns(data_train, data_test)
     remove_feature_class_without_var(data_train)
 

@@ -2,16 +2,12 @@ import pandas as pd
 
 
 from data_object import Data
-from handling_no_variance import handling_no_variance
-
-
-# TODO: Change the Preproccesor class to a modul and separate variance based feature removing and nan value handling
+from handling_no_variance import handle_no_variance
+from handling_non_values import handle_nan
 
 
 def preprocess():
     data_train = Data(target_column="TARGET")
     data_test = Data(name="test.csv")
-    handling_no_variance(data_train, data_test)
-
-
-preprocess()
+    handle_no_variance(data_train, data_test)
+    handle_nan(data_train, data_test)
